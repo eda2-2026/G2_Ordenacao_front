@@ -35,7 +35,7 @@ export function radixSortPreco(arr: ProdutoParaCard[], ordem: 'asc' | 'desc' = '
   const produtos = [...arr];
   let maiorPreco: number = Math.floor(Number(produtos[0].preco) * 100);
 
-  for (let i = 0; i < produtos.length; i++) {
+  for (let i = 1; i < produtos.length; i++) {
     const precoCentavos = Math.floor(Number(produtos[i].preco) * 100);
     if (precoCentavos > maiorPreco) {
       maiorPreco = precoCentavos;
