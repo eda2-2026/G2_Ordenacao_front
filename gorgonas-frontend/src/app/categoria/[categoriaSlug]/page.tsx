@@ -10,6 +10,7 @@ import StoreList from "@/components/ui/StoreList";
 import { ProductRow, ProdutoParaCard } from "@/components/ProductRow";
 import SortDropdown, { SortOption } from "@/components/ui/SortDropdown";
 import FiltroSubcategoriaModal from "../../../components/ModalFilterSub";
+import { radixSortPreco } from "./SortAlgoritmo";
 import { ArvoreBusca } from "@/utilis/Trie";
 interface CategoriaPageProps {
   params: Promise<{ categoriaSlug: string; }>;
@@ -218,7 +219,17 @@ export default function CategoriaPage({ params }: CategoriaPageProps) {
 
   }, [searchResults, currentPage, limit, currentSort, selectedSubcategory, categoriaAtual]);
 
-  const dataToDisplay = searchResults || eletronicosProdutos;
+  const rawData = searchResults || eletronicosProdutos;
+  const dataToDisplay = useMemo(() => {
+    if (!rawData || rawData.length === 0) return [];
+
+    if (currentSort === 'preco') {
+      return radixSortPreco([...rawData], 'asc');
+    }
+
+    return rawData;
+  }, [rawData, currentSort]);
+
   const isDisplayingSearch = searchResults !== null;
 
   let title = "";
