@@ -9,6 +9,7 @@ import SearchBar, { SuggestionItem } from '@/components/ui/SearchBar';
 import StoreList from "@/components/ui/StoreList";
 import { ProductRow, ProdutoParaCard } from "@/components/ProductRow";
 import SortDropdown, { SortOption } from "@/components/ui/SortDropdown";
+import { mergeSort, comparadorPorAvaliacao } from "@/utilis/sorting";
 import FiltroSubcategoriaModal from "../../../components/ModalFilterSub";
 import { ArvoreBusca } from "@/utilis/Trie";
 interface CategoriaPageProps {
@@ -169,22 +170,8 @@ export default function CategoriaPage({ params }: CategoriaPageProps) {
 
         let candidatos = Array.isArray(responseAvaliados.data) ? responseAvaliados.data : responseAvaliados.data.produtos || [];
 
-        const mediaEContagem = (prod: ProdutoParaCard) => {
-          const avals = prod.avaliacoes || [];
-          const count = avals.length;
-          if (count === 0) return { media: 0, count: 0 };
-          const soma = avals.reduce((acc, curr) => acc + (curr.nota || 0), 0);
-          return { media: soma / count, count };
-        };
-
         const somenteAvaliados = candidatos.filter((p: ProdutoParaCard) => (p.avaliacoes?.length || 0) > 0);
-        const listaOrdenadaPorNota = somenteAvaliados.sort((a: ProdutoParaCard, b: ProdutoParaCard) => {
-          const ma = mediaEContagem(a);
-          const mb = mediaEContagem(b);
-          if (mb.media !== ma.media) return mb.media - ma.media; // média desc
-          if (mb.count !== ma.count) return mb.count - ma.count; // mais avaliações primeiro
-          return a.nome.localeCompare(b.nome); // nome como desempate
-        });
+        const listaOrdenadaPorNota = mergeSort(somenteAvaliados, comparadorPorAvaliacao);
         setMaisAvaliados(listaOrdenadaPorNota.slice(0, 10));
 
         const listaRecentes = Array.isArray(responseRecentes.data)
