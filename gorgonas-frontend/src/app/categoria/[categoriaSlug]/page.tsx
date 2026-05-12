@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, use, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Navbar } from '@/components/Navbar';
 import { ProductCard } from '@/components/ProductCard';
 
@@ -63,8 +64,11 @@ const headerContent: Record<string, { titleLine1: string; titleLine2: string; im
 export default function CategoriaPage({ params }: CategoriaPageProps) {
   const resolvedParams = use(params);
   const categoriaAtual = resolvedParams.categoriaSlug;
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const activeHeader = headerContent[categoriaAtual];
+  const initialSort = (searchParams.get('ordenar') as SortOption) || 'id';
 
   const [maisAvaliados, setMaisAvaliados] = useState<ProdutoParaCard[]>([]);
   const [recemAdicionados, setRecemAdicionados] = useState<ProdutoParaCard[]>([]);
@@ -82,7 +86,7 @@ export default function CategoriaPage({ params }: CategoriaPageProps) {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Estados de Ordenação e Filtro
-  const [currentSort, setCurrentSort] = useState<SortOption>('id');
+  const [currentSort, setCurrentSort] = useState<SortOption>(initialSort);
   const [selectedSubcategory, setSelectedSubcategory] = useState<number | null>(null);
   const arvoreDeProdutos = useMemo(() => {
     return new ArvoreBusca();
@@ -165,7 +169,12 @@ export default function CategoriaPage({ params }: CategoriaPageProps) {
         const listaProdutos = dadosPrincipal.produtos || [];
         const total = dadosPrincipal.totalCount || 0;
 
-        setEletronicosProdutos(listaProdutos);
+        // Ordenar por avaliação 
+        const sortedProdutos = currentSort === 'rating'
+          ? mergeSort(listaProdutos, comparadorPorAvaliacao)
+          : listaProdutos;
+
+        setEletronicosProdutos(sortedProdutos);
         setTotalPages(Math.ceil(total / limit));
 
         let candidatos = Array.isArray(responseAvaliados.data) ? responseAvaliados.data : responseAvaliados.data.produtos || [];
@@ -276,7 +285,12 @@ export default function CategoriaPage({ params }: CategoriaPageProps) {
             {!isDisplayingSearch && (
               <SortDropdown
                 currentSort={currentSort}
-                onSortChange={setCurrentSort}
+                onSortChange={(sort) => {
+                  setCurrentSort(sort);
+                  const newParams = new URLSearchParams(searchParams.toString());
+                  newParams.set('ordenar', sort);
+                  router.replace(`?${newParams.toString()}`, { scroll: false });
+                }}
               />
             )}
           </div>

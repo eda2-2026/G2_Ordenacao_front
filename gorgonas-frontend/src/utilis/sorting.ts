@@ -24,11 +24,12 @@ function merge<T>(left: T[], right: T[], comparator: Comparator<T>): T[] {
 }
 
 /**
- * Função principal que ordena um array usando o algoritmo Merge Sort.
- * @param {Array} array - O array a ser ordenado.
- * @param {Function} comparator - A função de comparação que define a ordem.
- * @returns {Array} - O array ordenado.
+ * func princ algoritmo Merge Sort.
+ * @param {Array} array array a ser ordenado.
+ * @param {Function} comparator func de comparação que define a ordem.
+ * @returns {Array} array ordenado.
  */
+
 export function mergeSort<T>(array: T[], comparator: Comparator<T>): T[] {
   if (array.length <= 1) {
     return array;
@@ -41,7 +42,7 @@ export function mergeSort<T>(array: T[], comparator: Comparator<T>): T[] {
   return merge(mergeSort(left, comparator), mergeSort(right, comparator), comparator);
 }
 
-// Função auxiliar para calcular a média e contagem de avaliações
+// calcula a média e contagem de avaliações
 const mediaEContagem = (prod: ProdutoParaCard) => {
     const avals = prod.avaliacoes || [];
     const count = avals.length;
@@ -50,11 +51,11 @@ const mediaEContagem = (prod: ProdutoParaCard) => {
     return { media: soma / count, count };
 };
 
-// Comparador para produtos por avaliação (maior para menor)
+// Comp produtos por avaliação (maior para menor)
 export const comparadorPorAvaliacao = (a: ProdutoParaCard, b: ProdutoParaCard): number => {
     const ma = mediaEContagem(a);
     const mb = mediaEContagem(b);
-    if (mb.media !== ma.media) return mb.media - ma.media; // 1. Média da nota (descendente)
-    if (mb.count !== ma.count) return mb.count - ma.count; // 2. Número de avaliações (descendente)
-    return a.nome.localeCompare(b.nome); // 3. Nome do produto (alfabética)
+    if (mb.media !== ma.media) return mb.media - ma.media; // 1 Média da nota (descendente)
+    if (mb.count !== ma.count) return mb.count - ma.count; // 2 Número de avaliações (descendente)
+    return a.nome.localeCompare(b.nome); // 3 Nome do produto (alfabética)
 };

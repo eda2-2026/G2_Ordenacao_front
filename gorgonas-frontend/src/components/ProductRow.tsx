@@ -15,6 +15,7 @@ export type ProdutoParaCard = {
     } | null;
     unidade?: string;
     avaliacoes?: { nota: number }[];
+    createdAt?: string;
 };
 
 interface ProductRowProps {
