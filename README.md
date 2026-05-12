@@ -1,12 +1,11 @@
 # Stock.io
 
 Número da Lista: Grupo 2<br>
-Conteúdo da Disciplina: Busca<br>
+Conteúdo da Disciplina: Ordenação<br>
 
 ## 👥 Equipe - Grupo 2
 
-Dupla responsavel pela implementação dos algoritmos de busca
-
+Dupla responsavel pela implementação dos algoritmos de Ordenação
 | Foto | Nome | Matricula |
 |---:|---|---|
 | <img src="https://github.com/giovannafg.png" alt="Giovanna" width="80" style="border-radius:8px" /> | **[Giovanna Felipe](https://github.com/giovannafg)** | 241038998 |
@@ -17,9 +16,7 @@ Frontend do sistema de Catalogo de produtos e ecommerce, construído com Next.js
 
 
 ## Screenshots
-![Demonstração da Busca](./gorgonas-frontend/public/busca.png)
-![Demonstração da Busca](./gorgonas-frontend/public/busca1.png)
-![Demonstração da Busca](./gorgonas-frontend/public/busca2.png)
+![Demonstração da Busca](./gorgonas-frontend/public/precosort.png)
 
 
 ## 🛠️ Tecnologias
@@ -67,22 +64,20 @@ Após efetuar o login o usuário pode navegar pelo seu perfil para adicionar uma
 ## Outros 
 Link para repositório backend: https://github.com/eda2-2026/Busca_G2_back
 
-Link para vídeo explicativo: https://youtu.be/GpyrYawFntM
+Link para vídeo explicativo: https://youtu.be/wg7GRJDCees
 
 
 ## Estruturas de dados implementadas para otimização
-O projeto utiliza a estrutura de **Árvore Trie** para otimizar a busca de informações. Enquanto uma busca comum em um array tem complexidade $O(n)$, a nossa implementação atinge $O(m)$, onde *m* é o comprimento do termo buscado.
+O projeto utiliza o algoritmo **Radix Sort** para otimizar a ordenação por **preço**, e **Merge Sort** para otimizar a ordenação por **avaliação**
 
-### Onde as Árvores são utilizadas:
+A escolha do Radix Sort para a ordenação por preço justifica-se pela sua natureza não-comparativa, que permite alcançar uma complexidade de tempo linear $O(n \cdot k)$, superando o limite matemático de $O(n \log n)$ dos algoritmos convencionais ao tratar valores monetários como chaves numéricas de base decimal. 
 
-1.  **Home Page:**
-    http://localhost:3000
-    
-2.  **Páginas de Categoria:**:http://localhost:3000/{nomeCategoria}
-    
-3.  **Página de Lojas**:http://localhost:3000/loja
+Complementarmente, optou-se pelo Merge Sort para a ordenação por avaliações devido à sua estabilidade garantida; em um cenário de e-commerce, é fundamental que, ao ordenar produtos com a mesma nota média, a ordem cronológica ou alfabética anterior seja preservada, evitando reposicionamentos arbitrários na interface. 
 
-4. **Página de Produtos**: http://localhost:3000/produtos
+Juntos, esses algoritmos asseguram que o sistema mantenha um alto desempenho no processamento de grandes volumes de dados, enquanto preserva a integridade visual e a previsibilidade dos filtros aplicados pelo usuário
 
+### Onde as Ordenações são utilizadas:
 
-Em todas essas páginas a árvore de busca foi implementada na barra de pesquisa.
+1.  **Páginas de Categoria:** http://localhost:3000/categoria/{nomeCategoria}
+
+Os Algoritmos de Ordenação foram utilizados no filtro de listagem.
