@@ -14,7 +14,7 @@ Dupla responsavel pela implementação dos algoritmos de Ordenação
 ## Sobre 
 Frontend do sistema de Catalogo de produtos e ecommerce, construído com Next.js (App Router) e TypeScript. 
 
-## Outros 
+## Links 
 Link para repositório backend: https://github.com/eda2-2026/Busca_G2_back
 
 Link para vídeo explicativo: https://youtu.be/wg7GRJDCees
